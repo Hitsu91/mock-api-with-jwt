@@ -78,4 +78,24 @@ function update(req, res) {
   res.send(data);
 }
 
-module.exports = { getAll, getDBs, getOne, add, remove, update };
+function flushCollection(req, res) {
+  const collectionName = req.params.col;
+  db.delete(collectionName);
+  res.sendStatus(200);
+}
+
+function flushAll(req, res) {
+  db.clear();
+  res.sendStatus(200);
+}
+
+module.exports = {
+  getAll,
+  getDBs,
+  getOne,
+  add,
+  remove,
+  update,
+  flushAll,
+  flushCollection,
+};
