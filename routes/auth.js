@@ -2,7 +2,7 @@ const express = require('express');
 const router = express.Router();
 
 const jwt = require('jsonwebtoken');
-const { accessTokenSecret } = require('../config');
+const { accessTokenSecret, refreshTokenSecret } = require('../config/config');
 
 const users = [
   { username: 'admin', password: 'admin', role: 'Admin' },
@@ -17,8 +17,9 @@ router.post('/login', (req, res) => {
   if (!authenticatedUser) {
     return res.status(401).send({ error: 'Bad Credentials' });
   }
-  const accessToken = jwt.sign(authenticatedUser, accessTokenSecret);
-  res.json({ accessToken });
+  const accessToken = generateAccessToken(authenticatedUser);
+  const refreshToken = jwt.sign(authenticatedUser, refreshTokenSecret);
+  res.json({ accessToken, refreshToken });
 });
 
 router.post('/signup', (req, res) => {
@@ -29,5 +30,9 @@ router.post('/signup', (req, res) => {
       .send({ error: 'User with the same username exists' });
   }
 });
+
+function generateAccessToken(user) {
+  return jwt.sign(user, accessTokenSecret);
+}
 
 module.exports = router;

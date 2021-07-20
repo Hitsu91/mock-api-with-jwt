@@ -22,7 +22,7 @@ router.get('/', (_, res) =>
       {
         endpoint: '/admin',
         description: 'Manage mock apis',
-        paths: ['/flush', '/flush/:collection'],
+        paths: ['/logs', '/flush', '/flush/:collection'],
       },
     ],
   })
