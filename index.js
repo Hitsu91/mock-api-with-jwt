@@ -1,14 +1,16 @@
 const express = require('express');
-const authenticateToken = require('./middleware/auth_middleware');
+const cors = require('cors');
 
 const app = express();
 
+const authenticateToken = require('./middleware/auth_middleware');
 const mockApiRoute = require('./routes/mock-api');
 const authRoute = require('./routes/auth');
 const adminRoute = require('./routes/admin');
 const apiRoute = require('./routes/api');
 
 app.use(express.json());
+app.use(cors());
 
 app.use('/', apiRoute);
 app.use('/auth', authRoute);
