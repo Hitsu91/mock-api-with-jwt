@@ -1,3 +1,4 @@
+const fs = require('fs');
 const logTrace = { info: [], warn: [], error: [], debug: [] };
 
 const createLogMsg = (namespace, type, message) =>
@@ -10,6 +11,9 @@ const traceLog = (type, logMsg) => {
     logArray.splice(0, 1);
   }
   logArray.push(logMsg);
+  fs.appendFile('logs.txt', logMsg + '\n', (err) => {
+    if (err) throw err;
+  });
 };
 
 const info = (namespace) => (message) => {
