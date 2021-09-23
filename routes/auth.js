@@ -3,6 +3,7 @@ const router = express.Router();
 
 const jwt = require('jsonwebtoken');
 const { accessTokenSecret, refreshTokenSecret } = require('../config/config');
+const authenticateToken = require('../middleware/auth_middleware');
 
 const users = [
   { username: 'admin', password: 'admin', role: 'Admin' },
@@ -29,6 +30,14 @@ router.post('/signup', (req, res) => {
       .status(409)
       .send({ error: 'User with the same username exists' });
   }
+});
+
+router.get('/who-am-i', authenticateToken, (req, res) => {
+  const user = req.user;
+  if (user) {
+    return res.send(user);
+  }
+  res.status(405).send({ error: 'Unauthorized!!' });
 });
 
 function generateAccessToken(user) {
