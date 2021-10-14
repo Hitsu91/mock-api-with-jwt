@@ -3,11 +3,17 @@ const fs = require('fs');
 const { getLogTrace } = require('../config/logging');
 const router = express.Router();
 
-const { flushAll, flushCollection } = require('../controller/in_memory_db');
+const {
+  flushAll,
+  flushCollection,
+  loadRandomData,
+} = require('../controller/in_memory_db');
 
 router.delete('/flush', flushAll);
 
 router.delete('/flush/:col', flushCollection);
+
+router.post('/load-random-data/:col', loadRandomData);
 
 router.get('/logs', (req, res) => {
   res.send(getLogTrace());
