@@ -1,18 +1,20 @@
 const express = require('express');
 const router = express.Router();
+const { dbCollectionNames } = require('../controller/in_memory_db');
 
-router.get('/', (_, res) =>
-  res.send({
+router.get('/', (_, res) => {
+  const apiPath = dbCollectionNames().map((c) => `/${c}`);
+  return res.send({
     endpoints: [
       {
         endpoint: '/api/v1',
         description: 'Api without authentication',
-        paths: ['/**'],
+        paths: ['/**', ...apiPath],
       },
       {
         endpoint: '/api/v2',
         description: 'Api with authentication',
-        paths: ['/**'],
+        paths: ['/**', ...apiPath],
       },
       {
         endpoint: '/auth',
@@ -25,7 +27,7 @@ router.get('/', (_, res) =>
         paths: ['/logs', '/flush', '/flush/:collection'],
       },
     ],
-  })
-);
+  });
+});
 
 module.exports = router;

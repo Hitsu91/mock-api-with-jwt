@@ -2,6 +2,8 @@ const { v4 } = require('uuid');
 const faker = require('faker');
 const db = new Map();
 
+const dbCollectionNames = () => [...db.keys()];
+
 function getCollection(req) {
   const collectionName = req.params.col?.trim();
 
@@ -142,4 +144,5 @@ module.exports = {
   flushAll,
   flushCollection,
   loadRandomData,
+  dbCollectionNames,
 };
