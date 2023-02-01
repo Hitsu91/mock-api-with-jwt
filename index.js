@@ -26,4 +26,4 @@ app.use((req, res) => {
   res.status(404).send({ error: 'Not Valid Endpoint' });
 });
 
-app.listen(process.env.PORT || 5000);
+app.listen(process.env.PORT || 80);
