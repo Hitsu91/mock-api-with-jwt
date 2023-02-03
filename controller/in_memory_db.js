@@ -101,7 +101,8 @@ function randomOfType(type) {
     case 'date':
       return faker.date.between('2010-01-01', '2021-01-01');
     case 'image':
-      return faker.image.avatar();
+      console.log(faker.image);
+      return faker.image.image();
     default:
       return 'Type Not Supported';
   }
