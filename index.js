@@ -11,7 +11,9 @@ const authRoute = require('./routes/auth');
 const adminRoute = require('./routes/admin');
 const apiRoute = require('./routes/api');
 const loggingMiddleWare = require('./middleware/logger_middleware');
+const { seedRandomData } = require('./controller/in_memory_db');
 
+seedRandomData();
 app.use(express.json());
 app.use(cors());
 app.use(loggingMiddleWare);

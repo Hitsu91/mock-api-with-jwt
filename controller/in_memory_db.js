@@ -7,6 +7,10 @@ const dbCollectionNames = () => [...db.keys()];
 function getCollection(req) {
   const collectionName = req.params.col?.trim();
 
+  return _getCollection(collectionName);
+}
+
+function _getCollection(collectionName) {
   if (!db.has(collectionName)) {
     db.set(collectionName, []);
   }
@@ -92,22 +96,6 @@ function flushAll(req, res) {
   res.sendStatus(200);
 }
 
-function randomOfType(type) {
-  switch (type) {
-    case 'string':
-      return faker.lorem.lines(1);
-    case 'number':
-      return faker.datatype.number(100);
-    case 'date':
-      return faker.date.between('2010-01-01', '2021-01-01');
-    case 'image':
-      console.log(faker.image);
-      return faker.image.image();
-    default:
-      return 'Type Not Supported';
-  }
-}
-
 const MAX_COUNT = 100;
 
 function loadRandomData(req, res) {
@@ -118,11 +106,16 @@ function loadRandomData(req, res) {
     return res.sendStatus(400);
   }
 
+  generateRandomData(count, model, req);
+
+  return res.sendStatus(201);
+}
+
+function generateRandomData(count, model, req) {
   const generatedData = Array(count).fill().map(generateData);
 
   const collection = getCollection(req);
   collection.push(...generatedData);
-  return res.sendStatus(201);
 
   function generateData() {
     let res = {
@@ -137,6 +130,34 @@ function loadRandomData(req, res) {
   }
 }
 
+function randomOfType(type) {
+  switch (type) {
+    case 'string':
+      return faker.lorem.lines(1);
+    case 'number':
+      return faker.datatype.number(100);
+    case 'date':
+      return faker.date.between('2010-01-01', '2021-01-01');
+    case 'image':
+      return faker.image.image();
+    default:
+      return 'Type Not Supported';
+  }
+}
+
+function seedRandomData() {
+  generateRandomData(
+    50,
+    {
+      nome: 'string',
+      prezzo: 'number',
+      categoria: 'string',
+      urlImmagine: 'image',
+    },
+    { params: { col: 'prodotti' } }
+  );
+}
+
 module.exports = {
   getAll,
   getDBs,
@@ -148,4 +169,5 @@ module.exports = {
   flushCollection,
   loadRandomData,
   dbCollectionNames,
+  seedRandomData,
 };
