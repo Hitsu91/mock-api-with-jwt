@@ -124,7 +124,9 @@ function loadRandomData(req, res) {
   return res.sendStatus(201);
 
   function generateData() {
-    let res = {};
+    let res = {
+      id: v4(),
+    };
 
     for (const k in model) {
       res[k] = randomOfType(model[k]);
