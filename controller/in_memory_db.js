@@ -1,5 +1,5 @@
 const { v4 } = require('uuid');
-const faker = require('faker');
+const { faker } = require('@faker-js/faker');
 const db = new Map();
 
 const dbCollectionNames = () => [...db.keys()];
@@ -135,11 +135,17 @@ function randomOfType(type) {
     case 'string':
       return faker.lorem.lines(1);
     case 'number':
-      return faker.datatype.number(100);
+      return faker.number.float({ min: 0, max: 299.99, precision: 0.01 });
     case 'date':
-      return faker.date.between('2010-01-01', '2021-01-01');
+      return faker.date.between({ from: '2010-01-01', to: '2021-01-01' });
     case 'image':
-      return faker.image.image();
+      return faker.image.urlLoremFlickr({
+        category: 'food',
+      });
+    case 'product-name':
+      return faker.commerce.product();
+    case 'category':
+      return faker.commerce.department();
     default:
       return 'Type Not Supported';
   }
@@ -149,9 +155,9 @@ function seedRandomData() {
   generateRandomData(
     50,
     {
-      nome: 'string',
+      nome: 'product-name',
       prezzo: 'number',
-      categoria: 'string',
+      categoria: 'category',
       urlImmagine: 'image',
     },
     { params: { col: 'prodotti' } }
